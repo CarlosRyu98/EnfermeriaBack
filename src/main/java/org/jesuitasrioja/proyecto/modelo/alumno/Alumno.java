@@ -3,6 +3,10 @@ package org.jesuitasrioja.proyecto.modelo.alumno;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+
+import org.jesuitasrioja.proyecto.modelo.profesor.Profesor;
+import org.jesuitasrioja.proyecto.modelo.responsable.Responsable;
 
 @Entity
 public class Alumno {
@@ -19,6 +23,10 @@ public class Alumno {
 	private String telefono;
 	@Column
 	private String direccion;
+	@ManyToOne
+	private Profesor tutor;
+	@ManyToOne
+	private Responsable responsable;
 
 	public String getIdentificador() {
 		return identificador;
@@ -96,10 +104,31 @@ public class Alumno {
 	}
 
 
+	public Profesor getTutor() {
+		return tutor;
+	}
+
+
+	public void setTutor(Profesor tutor) {
+		this.tutor = tutor;
+	}
+
+
+	public Responsable getResponsable() {
+		return responsable;
+	}
+
+
+	public void setResponsable(Responsable responsable) {
+		this.responsable = responsable;
+	}
+
+
 	@Override
 	public String toString() {
 		return "Alumno [identificador=" + identificador + ", dni=" + dni + ", nombre=" + nombre + ", fechaNacimiento="
-				+ fechaNacimiento + ", telefono=" + telefono + ", direccion=" + direccion + "]";
+				+ fechaNacimiento + ", telefono=" + telefono + ", direccion=" + direccion + ", tutor=" + tutor
+				+ ", responsable=" + responsable + "]";
 	}
 
 

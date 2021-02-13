@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class AlumnoService extends BaseService<Alumno, String, AlumnoRepository> {
 
-	public ResponseEntity<Object> editById(String id) {
+	public void editById(String id) {
 
 		Optional<Alumno> aOptional = repositorio.findById(id);
 		if (aOptional.isPresent()) {
@@ -18,8 +18,12 @@ public class AlumnoService extends BaseService<Alumno, String, AlumnoRepository>
 			this.repositorio.save(a);
 		}
 
-		return new ResponseEntity<Object>(null);
-
+	}
+	
+	public void editProfesor(String idAlumno, String idProfesor) {
+		
+		Optional<Alumno> aOptional = repositorio.findById(idAlumno);
+		
 	}
 
 }
