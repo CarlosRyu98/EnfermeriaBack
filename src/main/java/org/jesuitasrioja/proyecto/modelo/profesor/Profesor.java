@@ -1,8 +1,13 @@
 package org.jesuitasrioja.proyecto.modelo.profesor;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+
+import org.jesuitasrioja.proyecto.modelo.alumno.Alumno;
 
 @Entity
 public class Profesor {
@@ -13,6 +18,8 @@ public class Profesor {
 	private String nombre;
 	@Column
 	private String telefono;
+	@OneToMany(mappedBy = "alumno")
+	private List<Alumno> alumnos;
 	
 	public Profesor(String identificador, String nombre, String telefono) {
 		super();

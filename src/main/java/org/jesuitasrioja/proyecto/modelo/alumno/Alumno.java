@@ -1,5 +1,6 @@
 package org.jesuitasrioja.proyecto.modelo.alumno;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;

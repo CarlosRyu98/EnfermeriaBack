@@ -55,38 +55,41 @@ public class AlumnoController {
 
 	// Eliminar un alumno mediante su identificador
 	@DeleteMapping("/alumno/{idAlumno}")
-	public void deleteAlumno(@PathVariable String idAlumno) {
+	public ResponseEntity<?> deleteAlumno(@PathVariable String idAlumno) {
 		as.deleteById(idAlumno);
+		return ResponseEntity.status(HttpStatus.OK).build();
 	}
 
 	// Modificar un alumno
 	@PutMapping("/alumno/{idAlumno}")
-	public ResponseEntity<Object> putAlumno(@PathVariable String idAlumno) {
-		return as.editById(idAlumno);
+	public ResponseEntity<?> putAlumno(@PathVariable String idAlumno) {
+		as.editById(idAlumno);
+		return ResponseEntity.status(HttpStatus.OK).build();
 	}
 
 	// Añadir un nuevo alumno
 	@PostMapping("/alumno")
-	public Alumno postAlumno(@RequestBody Alumno nuevoAlumno) {
-		return as.save(nuevoAlumno);
+	public ResponseEntity<?> postAlumno(@RequestBody Alumno nuevoAlumno) {
+		Alumno a = as.save(nuevoAlumno);
+		return ResponseEntity.status(HttpStatus.OK).body(a);
 	}
 
 	// Asociar un profesor a un alumno
 	@PutMapping("/alumno/{idAlumno}/profesor/{idProfesor}")
-	public ResponseEntity<Object> putProfesor(@RequestBody String idAlumno, String idProfesor) {
-		return as.editProfesor(null);
+	public ResponseEntity<?> putProfesor(@RequestBody String idAlumno, String idProfesor) {
+		return ResponseEntity.status(HttpStatus.OK).build(); // as.editProfesor(null);
 	}
 
 	// Añadir un responsable a un alumno
 	@PostMapping("/alumno/{idAlumno}/responsable")
-	public ResponseEntity<Alumno> postResponsable(@RequestBody Alumno idAlumno, Responsable nuevoResponsable) {
-		return null;
+	public ResponseEntity<?> postResponsable(@RequestBody Alumno idAlumno, Responsable nuevoResponsable) {
+		return ResponseEntity.status(HttpStatus.OK).build();
 	}
 
 	// Eliminar un responsable de un alumno
 	@DeleteMapping("/alumno/{idAlumno}/responsable/{idResponsable}")
-	public Alumno deleteResponsable(@RequestBody String idAlumno, String idResponsable) {
-		return null;
+	public ResponseEntity<?> deleteResponsable(@RequestBody String idAlumno, String idResponsable) {
+		return ResponseEntity.status(HttpStatus.OK).build();
 	}
 
 }

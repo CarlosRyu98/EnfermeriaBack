@@ -1,8 +1,13 @@
 package org.jesuitasrioja.proyecto.modelo.responsable;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+
+import org.jesuitasrioja.proyecto.modelo.alumno.Alumno;
 
 @Entity
 public class Responsable {
@@ -15,6 +20,8 @@ public class Responsable {
 	private String parentesco;
 	@Column
 	private String nombre;
+	@OneToMany(mappedBy = "alumno")
+	private List<Alumno> alumnos;
 	
 	
 	public Responsable(long identificador, String telefono, String parentesco, String nombre) {
