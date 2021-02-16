@@ -6,10 +6,12 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 import org.jesuitasrioja.proyecto.modelo.alumno.Alumno;
 
 @Entity
+@Table(name = "profesores")
 public class Profesor {
 	
 	@Id
@@ -18,7 +20,7 @@ public class Profesor {
 	private String nombre;
 	@Column
 	private String telefono;
-	@OneToMany(mappedBy = "alumno")
+	@OneToMany(mappedBy = "tutor")
 	private List<Alumno> alumnos;
 	
 	public Profesor(String identificador, String nombre, String telefono) {

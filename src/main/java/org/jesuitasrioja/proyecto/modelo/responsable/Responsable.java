@@ -6,10 +6,12 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 import org.jesuitasrioja.proyecto.modelo.alumno.Alumno;
 
 @Entity
+@Table(name = "responsables")
 public class Responsable {
 	
 	@Id
@@ -20,7 +22,7 @@ public class Responsable {
 	private String parentesco;
 	@Column
 	private String nombre;
-	@OneToMany(mappedBy = "alumno")
+	@OneToMany(mappedBy = "responsable")
 	private List<Alumno> alumnos;
 	
 	

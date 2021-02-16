@@ -8,6 +8,7 @@ import org.jesuitasrioja.proyecto.modelo.alumno.AlumnoDTO;
 import org.jesuitasrioja.proyecto.modelo.alumno.AlumnoDTOConverter;
 import org.jesuitasrioja.proyecto.modelo.responsable.Responsable;
 import org.jesuitasrioja.proyecto.persistencia.services.AlumnoService;
+import org.jesuitasrioja.proyecto.persistencia.services.ProfesorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,16 +30,19 @@ public class AlumnoController {
 	private AlumnoService as;
 	
 	@Autowired
+	private ProfesorService ps;
+	
+	@Autowired
 	private AlumnoDTOConverter alumnoDTOConverter;
 
 	// Obtener información de un alumno a través de su identificador
-	@GetMapping("/alumno/{idAlumno}")
+	@GetMapping("alumno/{idAlumno}")
 	public Optional<Alumno> getAlumno(@PathVariable String idAlumno) {
 		return as.findById(idAlumno);
 	}
 
 	// Obtener información de todos los alumnos de forma paginada por patrón DTO
-	@GetMapping("/alumnos")
+	@GetMapping("alumnos")
 	public ResponseEntity<?> getAlumnos(@PageableDefault(size = 10, page = 0) Pageable pageable) {
 		
 		Page<Alumno> pagina = as.findAll(pageable);
@@ -54,40 +58,42 @@ public class AlumnoController {
 	}
 
 	// Eliminar un alumno mediante su identificador
-	@DeleteMapping("/alumno/{idAlumno}")
+	@DeleteMapping("alumno/{idAlumno}")
 	public ResponseEntity<?> deleteAlumno(@PathVariable String idAlumno) {
 		as.deleteById(idAlumno);
 		return ResponseEntity.status(HttpStatus.OK).build();
 	}
 
 	// Modificar un alumno
-	@PutMapping("/alumno/{idAlumno}")
+	@PutMapping("alumno/{idAlumno}")
 	public ResponseEntity<?> putAlumno(@PathVariable String idAlumno) {
 		as.editById(idAlumno);
 		return ResponseEntity.status(HttpStatus.OK).build();
 	}
 
 	// Añadir un nuevo alumno
-	@PostMapping("/alumno")
+	@PostMapping("alumno")
 	public ResponseEntity<?> postAlumno(@RequestBody Alumno nuevoAlumno) {
 		Alumno a = as.save(nuevoAlumno);
 		return ResponseEntity.status(HttpStatus.OK).body(a);
 	}
 
 	// Asociar un profesor a un alumno
-	@PutMapping("/alumno/{idAlumno}/profesor/{idProfesor}")
+	@PutMapping("alumno/{idAlumno}/profesor/{idProfesor}")
 	public ResponseEntity<?> putProfesor(@RequestBody String idAlumno, String idProfesor) {
-		return ResponseEntity.status(HttpStatus.OK).build(); // as.editProfesor(null);
+		as.findById(idAlumno);
+		ps.findById(idProfesor);
+		return ResponseEntity.status(HttpStatus.OK).build();
 	}
 
 	// Añadir un responsable a un alumno
-	@PostMapping("/alumno/{idAlumno}/responsable")
+	@PostMapping("alumno/{idAlumno}/responsable")
 	public ResponseEntity<?> postResponsable(@RequestBody Alumno idAlumno, Responsable nuevoResponsable) {
 		return ResponseEntity.status(HttpStatus.OK).build();
 	}
 
 	// Eliminar un responsable de un alumno
-	@DeleteMapping("/alumno/{idAlumno}/responsable/{idResponsable}")
+	@DeleteMapping("alumno/{idAlumno}/responsable/{idResponsable}")
 	public ResponseEntity<?> deleteResponsable(@RequestBody String idAlumno, String idResponsable) {
 		return ResponseEntity.status(HttpStatus.OK).build();
 	}

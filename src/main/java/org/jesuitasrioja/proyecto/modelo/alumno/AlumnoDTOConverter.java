@@ -1,20 +1,15 @@
 package org.jesuitasrioja.proyecto.modelo.alumno;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import lombok.RequiredArgsConstructor;
+
 @Component
+@RequiredArgsConstructor
 public class AlumnoDTOConverter {
 	
-	@Autowired
-	private final ModelMapper modelMapper;
-	
-	public AlumnoDTOConverter(ModelMapper modelMapper) {
-		
-		this.modelMapper = modelMapper;
-		
-	}
+	private final ModelMapper modelMapper = new ModelMapper();
 	
 	public AlumnoDTO convertAlumnoToAlumnoDTO(Alumno alumno) {
 		

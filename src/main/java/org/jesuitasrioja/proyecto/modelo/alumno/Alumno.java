@@ -1,15 +1,16 @@
 package org.jesuitasrioja.proyecto.modelo.alumno;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 import org.jesuitasrioja.proyecto.modelo.profesor.Profesor;
 import org.jesuitasrioja.proyecto.modelo.responsable.Responsable;
 
 @Entity
+@Table(name = "alumnos")
 public class Alumno {
 	
 	@Id
