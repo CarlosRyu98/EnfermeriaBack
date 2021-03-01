@@ -6,9 +6,11 @@ import java.util.function.Function;
 import org.jesuitasrioja.proyecto.modelo.alumno.Alumno;
 import org.jesuitasrioja.proyecto.modelo.alumno.AlumnoDTO;
 import org.jesuitasrioja.proyecto.modelo.alumno.AlumnoDTOConverter;
+import org.jesuitasrioja.proyecto.modelo.profesor.Profesor;
 import org.jesuitasrioja.proyecto.modelo.responsable.Responsable;
 import org.jesuitasrioja.proyecto.persistencia.services.AlumnoService;
 import org.jesuitasrioja.proyecto.persistencia.services.ProfesorService;
+import org.jesuitasrioja.proyecto.persistencia.services.ResponsableService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,10 +30,13 @@ public class AlumnoController {
 
 	@Autowired
 	private AlumnoService as;
-	
+
 	@Autowired
 	private ProfesorService ps;
 	
+	@Autowired
+	private ResponsableService rs;
+
 	@Autowired
 	private AlumnoDTOConverter alumnoDTOConverter;
 
@@ -44,7 +49,7 @@ public class AlumnoController {
 	// Obtener información de todos los alumnos de forma paginada por patrón DTO
 	@GetMapping("alumnos")
 	public ResponseEntity<?> getAlumnos(@PageableDefault(size = 10, page = 0) Pageable pageable) {
-		
+
 		Page<Alumno> pagina = as.findAll(pageable);
 
 		Page<AlumnoDTO> paginaDTO = pagina.map(new Function<Alumno, AlumnoDTO>() {
@@ -52,7 +57,7 @@ public class AlumnoController {
 			public AlumnoDTO apply(Alumno t) {
 				return alumnoDTOConverter.convertAlumnoToAlumnoDTO(t);
 			}
-			
+
 		});
 		return ResponseEntity.status(HttpStatus.OK).body(paginaDTO);
 	}
@@ -80,22 +85,40 @@ public class AlumnoController {
 
 	// Asociar un profesor a un alumno
 	@PutMapping("alumno/{idAlumno}/profesor/{idProfesor}")
-	public ResponseEntity<?> putProfesor(@RequestBody String idAlumno, String idProfesor) {
-		as.findById(idAlumno);
-		ps.findById(idProfesor);
-		return ResponseEntity.status(HttpStatus.OK).build();
+	public ResponseEntity<?> putProfesor(@PathVariable String idAlumno, String idProfesor) {
+		Optional<Alumno> alumno = as.findById(idAlumno);
+		Optional<Profesor> profesor = ps.findById(idProfesor);
+		if (alumno.isPresent() && profesor.isPresent()) {
+			alumno.get().setTutor(profesor.get());
+			as.edit(alumno.get());
+			return ResponseEntity.status(HttpStatus.OK).build();
+		}
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 	}
 
 	// Añadir un responsable a un alumno
 	@PostMapping("alumno/{idAlumno}/responsable")
-	public ResponseEntity<?> postResponsable(@RequestBody Alumno idAlumno, Responsable nuevoResponsable) {
-		return ResponseEntity.status(HttpStatus.OK).build();
+	public ResponseEntity<?> postResponsable(@RequestBody Responsable nuevoResponsable, @PathVariable String idAlumno) {
+		Optional<Alumno> alumno = as.findById(idAlumno);
+		if (alumno.isPresent()) {
+			alumno.get().setResponsable(nuevoResponsable);
+			as.edit(alumno.get());
+			return ResponseEntity.status(HttpStatus.OK).build();
+		}
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 	}
 
 	// Eliminar un responsable de un alumno
 	@DeleteMapping("alumno/{idAlumno}/responsable/{idResponsable}")
-	public ResponseEntity<?> deleteResponsable(@RequestBody String idAlumno, String idResponsable) {
-		return ResponseEntity.status(HttpStatus.OK).build();
+	public ResponseEntity<?> deleteResponsable(@PathVariable String idAlumno, String idResponsable) {
+		Optional<Alumno> alumno = as.findById(idAlumno);
+		Optional<Responsable> responsable = rs.findById(idResponsable);
+		if (alumno.isPresent() && responsable.isPresent() && alumno.get().getResponsable() == responsable.get()) {
+			alumno.get().setResponsable(null);
+			as.edit(alumno.get());
+			return ResponseEntity.status(HttpStatus.OK).build();
+		}
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 	}
 
 }

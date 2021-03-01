@@ -114,6 +114,10 @@
 			<scope>runtime</scope>
 		</dependency>
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> branch 'master' of https://github.com/CarlosRyu98/Proyecto
 	</dependencies>
 
 	<build>
