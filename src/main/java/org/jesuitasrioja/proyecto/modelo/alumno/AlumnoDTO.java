@@ -16,4 +16,5 @@ public class AlumnoDTO implements Serializable {
 	private String fechaNacimiento;
 	private String telefono;
 	private String direccion;
+	
 }
