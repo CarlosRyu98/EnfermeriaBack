@@ -2,8 +2,10 @@ package org.jesuitasrioja.proyecto.configurations;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
-public class MiConfiguracion {
+@Configuration
+public class GeneralConfigurations {
 	
 	@Bean
 	public ModelMapper modelMapper() {

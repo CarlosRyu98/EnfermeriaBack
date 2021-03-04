@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AlumnoDTO implements Serializable {
-	
+
 	private String dni;
 	private String nombre;
 	private String fechaNacimiento;

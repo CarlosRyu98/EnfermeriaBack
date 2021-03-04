@@ -14,20 +14,21 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @Configuration
 @EnableSwagger2
-public class SwaggerConfig {
+public class SwaggerConfigurationBasic {
 	@Bean
 	public Docket api() {
 		return new Docket(DocumentationType.SWAGGER_2)
 				.select()
 				.apis(RequestHandlerSelectors.basePackage("org.jesuitasrioja.proyecto.controllers"))
 				.paths(PathSelectors.any())
-				.build();
+				.build()
+				.apiInfo(apiInfo());
 	}
 	
 	@Bean
 	public ApiInfo apiInfo() {
 		return new ApiInfoBuilder()
-				.title("Enfermería")
+				.title("Enfermeria")
 				.description("Proyecto de enfermería")
 				.version("0.1")
 				.contact(new Contact("Carlos", "url",
