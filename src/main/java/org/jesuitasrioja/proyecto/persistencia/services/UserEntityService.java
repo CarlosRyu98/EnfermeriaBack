@@ -11,7 +11,9 @@ import org.jesuitasrioja.proyecto.persistencia.repositories.UserEntityRepository
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
+@Service
 public class UserEntityService extends BaseService<UserEntity, String, UserEntityRepository> {
 	
 	@Autowired
@@ -26,14 +28,20 @@ public class UserEntityService extends BaseService<UserEntity, String, UserEntit
 	public UserEntity nuevoUsuario(UserEntity userEntity) {
 		
 		Set<UserRole> defaultRoles = new HashSet<UserRole>();
+		
 		userEntity.setId(String.valueOf(Math.abs(new Random().nextInt())));
 		userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
+		
 		if (userEntity.getRoles() == null) {
+			
 			defaultRoles.add(UserRole.USER);
 			userEntity.setRoles(defaultRoles);
+			
 		} else if (userEntity.getRoles().size() == 0) {
+			
 			defaultRoles.add(UserRole.USER);
 			userEntity.setRoles(defaultRoles);
+			
 		}
 		return this.repositorio.save(userEntity);
 	}

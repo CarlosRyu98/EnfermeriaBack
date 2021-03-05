@@ -16,12 +16,27 @@ public class CustomUserDetailsService implements UserDetailsService {
 	private UserEntityService userEntityService;
 	
 	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+	public UserDetails loadUserByUsername(String username)
+			throws UsernameNotFoundException {
+		
 		Optional<UserEntity> user = userEntityService.findByUserName(username);
+		
 		if (user.isPresent()) {
 			return user.get();
 		} else {
 			throw new UsernameNotFoundException(username + " not found");
+		}
+	}
+	
+	public UserDetails loadUserById(String idUser)
+			throws UsernameNotFoundException {
+		
+		Optional<UserEntity> user = userEntityService.findById(idUser);
+		
+		if (user.isPresent()) {
+			return user.get();
+		} else {
+			throw new UsernameNotFoundException(idUser + " not found");
 		}
 	}
 

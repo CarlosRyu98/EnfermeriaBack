@@ -24,8 +24,8 @@ import lombok.extern.java.Log;
 @RequiredArgsConstructor
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
 	
-	private final JwtTokenProvider tokenProvider = new JwtTokenProvider();
-	private final CustomUserDetailsService userDetailsService = new CustomUserDetailsService();
+	private final JwtTokenProvider tokenProvider;
+	private final CustomUserDetailsService userDetailsService;
 	
 	@Override
 	protected void doFilterInternal(HttpServletRequest request,
@@ -39,7 +39,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 			if (StringUtils.hasText(token) && tokenProvider.validateToken(token)) {
 				String userId = tokenProvider.getUserIdFromJWT(token);
 				
-				UserEntity user = (UserEntity) userDetailsService.loadUserByUsername(userId);
+				UserEntity user = (UserEntity) userDetailsService.loadUserById(userId);
 				UsernamePasswordAuthenticationToken authentication = 
 						new UsernamePasswordAuthenticationToken(user, user.getRoles(),
 								user.getAuthorities());
@@ -48,8 +48,10 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 				SecurityContextHolder.getContext().setAuthentication(authentication);
 			}
 		} catch (Exception ex) {
-		} filterChain.doFilter(request, response);
-		
+			log.info("No se ha podido establecer la autenticación de usuario"
+					+ " en el contexto de seguirdad");
+		}
+		filterChain.doFilter(request, response);
 	}
 	
 	private String getJwtFromRequest(HttpServletRequest request) {

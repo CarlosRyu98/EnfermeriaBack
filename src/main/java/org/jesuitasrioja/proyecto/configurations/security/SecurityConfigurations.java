@@ -13,6 +13,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import lombok.RequiredArgsConstructor;
 
@@ -22,10 +23,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
 	
-	private final AuthenticationEntryPoint jwtAuthenticatinEntryPoint = null;
-	private final UserDetailsService userDetailsService = null;
-	private final PasswordEncoder passwordEncoder = null;
-	private final JwtAuthorizationFilter jwtAuthorizationFilter = new JwtAuthorizationFilter();
+	private final AuthenticationEntryPoint jwtAuthenticationEntryPoint;
+	private final UserDetailsService userDetailsService;
+	private final PasswordEncoder passwordEncoder;
+	private final JwtAuthorizationFilter jwtAuthorizationFilter;
 	
 	@Bean
 	@Override
@@ -43,7 +44,7 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		
-		http.httpBasic().authenticationEntryPoint(jwtAuthenticatinEntryPoint)
+		http.httpBasic().authenticationEntryPoint(jwtAuthenticationEntryPoint)
 		.and().authorizeRequests()
 		.antMatchers(HttpMethod.GET, "/alumnos/**").permitAll()
 		.antMatchers(HttpMethod.GET, "/alumno/**").hasRole("ADMIN")

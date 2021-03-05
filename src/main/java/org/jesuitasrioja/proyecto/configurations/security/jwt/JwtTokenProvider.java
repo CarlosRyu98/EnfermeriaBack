@@ -26,7 +26,7 @@ public class JwtTokenProvider {
 	@Value("${jwt.secret:PorfaCarlosApruebame}")
 	private String jwtSecreto;
 	
-	@Value("{jwt.token-expiration:86400}")
+	@Value("${jwt.token-expiration:86400}")
 	private int jwtDuracionTokenEnSegundos;
 	
 	public String generateToken(Authentication authentication) {
@@ -49,6 +49,14 @@ public class JwtTokenProvider {
 	
 	}
 	
+	public String getUserIdFromJWT(String token) {
+		
+		Claims claims = Jwts.parser()
+				.setSigningKey(Keys.hmacShaKeyFor(jwtSecreto.getBytes()))
+				.parseClaimsJws(token).getBody();
+		return claims.getSubject();
+	}
+	
 	public boolean validateToken(String authToken) {
 		try {
 			Jwts.parser().setSigningKey(jwtSecreto.getBytes()).parseClaimsJws(authToken);
@@ -59,12 +67,6 @@ public class JwtTokenProvider {
 		return false;
 	}
 
-	public String getUserIdFromJWT(String token) {
-		
-		Claims claims = Jwts.parser()
-				.setSigningKey(Keys.hmacShaKeyFor(jwtSecreto.getBytes()))
-				.parseClaimsJws(token).getBody();
-		return claims.getSubject();
-	}
+
 
 }
