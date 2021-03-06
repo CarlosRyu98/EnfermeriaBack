@@ -20,10 +20,10 @@ public class JwtTokenProvider {
 	// Cabecera para mandar el token
 	public static final String TOKEN_HEADER = "Authorization";
 	// Prefijo del token en la cabecera
-	public static final String TOKEN_PREFIX = "Bearer";
+	public static final String TOKEN_PREFIX = "Bearer ";
 	public static final String TOKEN_TYPE = "JWT";
 	
-	@Value("${jwt.secret:PorfaCarlosApruebame}")
+	@Value("${jwt.secret:EnUnLugarDeLaManchaDeCuyoNombreNoQuieroAcordarmeNoHaMuchoTiempoQueViviaUnHidalgo}")
 	private String jwtSecreto;
 	
 	@Value("${jwt.token-expiration:86400}")
@@ -31,12 +31,12 @@ public class JwtTokenProvider {
 	
 	public String generateToken(Authentication authentication) {
 		
-	UserEntity user = (UserEntity) authentication.getPrincipal();
+		UserEntity user = (UserEntity) authentication.getPrincipal();
 	
-	Date tokenExpirationDate = new Date(System.currentTimeMillis() +
+		Date tokenExpirationDate = new Date(System.currentTimeMillis() +
 			(jwtDuracionTokenEnSegundos * 1000));
 	
-	return Jwts.builder()
+		return Jwts.builder()
 			.signWith(Keys.hmacShaKeyFor(jwtSecreto.getBytes()),
 					SignatureAlgorithm.HS512)
 			.setHeaderParam("typ", TOKEN_TYPE)
